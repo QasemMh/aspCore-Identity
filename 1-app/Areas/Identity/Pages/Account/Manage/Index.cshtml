@@ -1,0 +1,80 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Profile";
+    ViewData["ActivePage"] = ManageNavPages.Index;
+
+    var rand = new Random().Next(20);
+}
+
+<h4>@ViewData["Title"]</h4>
+<partial name="_StatusMessage" model="Model.StatusMessage" />
+<form id="profile-form" method="post" enctype="multipart/form-data">
+
+    <div class="row flex-wrap-reverse">
+        <div class="col-md-6">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Input.Username"></label>
+                <input asp-for="Input.Username" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.FirstName"></label>
+                <input asp-for="Input.FirstName" class="form-control" />
+            </div>  <div class="form-group">
+                <label asp-for="Input.LastName"></label>
+                <input asp-for="Input.LastName" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.PhoneNumber"></label>
+                <input asp-for="Input.PhoneNumber" class="form-control" />
+                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+            </div>
+            <button id="update-profile-button" type="submit" class="btn btn-primary">Save</button>
+        </div>
+        <div class="md-col-6 text-center">
+            <div class="form-group img-container">
+                <label asp-for="Input.ImagePath" class="w-100"></label>
+                <div class="image-wrapper">
+                    @if (Model.Input.ImagePath != null)
+                    {
+                        <!--test for image-->
+                        <img src="~/User-Image/@Model.Input.ImagePath"
+                             alt="photo" class="img-thumbnail profile-img"
+                             loading="lazy"
+                             id="image_src"
+                             asp-append-version="true" />
+                    }
+                    else
+                    {
+                        <img src="https://picsum.photos/id/@rand/200/200"
+                             alt="photo"
+                             class="img-thumbnail profile-img"
+                             id="image_src" loading="lazy"
+                             asp-append-version="true" />
+                    }
+                </div>
+                <div class="custom-file form-group">
+                    <input type="file"
+                           accept="image/*"
+                           asp-for="Input.ImagePath"
+                           id="ImagePath"
+                           onchange="document.querySelector('#image_src').src = window.URL.createObjectURL(this.files[0])"
+                           class="custom-file-input">
+                    <label class="custom-file-label"
+                           asp-for="Input.ImagePath">
+                        Upload Image
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script type='text/javascript'>
+
+    </script>
+}
